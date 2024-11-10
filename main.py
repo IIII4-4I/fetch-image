@@ -58,23 +58,24 @@ def fetch_random_image(query):
         return None
 
 # Main
+# Main
 subreddit = reddit.subreddit("all")
 for comment in subreddit.stream.comments(skip_existing=True):
     if f"u/{reddit.user.me()}" in comment.body.lower():
         request = comment.body.lower().split(f"u/{reddit.user.me()}")[1].strip()
         if "fetch me" in request:
             search_term = request.split("fetch me")[-1].strip()
-            logging.info(f"Received request to fetch image for: {search_term}")
             image_url = fetch_random_image(search_term)
+            disclaimer = "\n\n---\n\nI am a bot. This action was performed automatically."
             if image_url:
                 imgur_url = upload_to_imgur(image_url)
                 if imgur_url:
-                    comment.reply(f"Here’s a random image of {search_term}: ![Image]({imgur_url})")
+                    comment.reply(f"Here’s a random image of {search_term}: ![Image]({imgur_url}){disclaimer}")
                     logging.info(f"Successfully posted image for: {search_term}")
                 else:
-                    comment.reply(f"Sorry, I couldn't fetch an image of {search_term} at the moment.")
+                    comment.reply(f"Sorry, sI couldn't fetch an image of {search_term} at the moment.{disclaimer}")
                     logging.error(f"Failed to upload image for: {search_term}")
             else:
-                comment.reply(f"Sorry, I couldn't fetch an image of {search_term} at the moment.")
+                comment.reply(f"Sorry, I couldn't fetch an image of {search_term} at the moment.{disclaimer}")
                 logging.error(f"Failed to fetch image for: {search_term}")
             time.sleep(60)
