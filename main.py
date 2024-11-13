@@ -16,7 +16,7 @@ load_dotenv()
 reddit = praw.Reddit(
     client_id=os.getenv("REDDIT_CLIENT_ID"),
     client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
-    user_agent="FetchItBot v1.0 (by u/FetchItForYou)",
+    user_agent="FetchItBot/1.0 by u/FetchItForYou (Purpose: Fetch an image)",
     username=os.getenv("REDDIT_USERNAME"),
     password=os.getenv("REDDIT_PASSWORD")
 )
@@ -57,7 +57,6 @@ def fetch_random_image(query):
         logging.error(f"Error fetching random image for '{query}': {e}")
         return None
 
-# Main
 # Main
 subreddit = reddit.subreddit("all")
 for comment in subreddit.stream.comments(skip_existing=True):
